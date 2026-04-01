@@ -19,6 +19,22 @@ const { tip, color = 'var(--primary)' } = Astro.props;
     padding: 14px 16px;
     margin-bottom: 24px;
     border-left: 3px solid;
+    animation: slideInLeft 0.5s var(--ease-out) 0.2s both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tip-callout::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: inherit;
+    transform: scaleY(0);
+    transform-origin: top;
+    animation: none;
   }
 
   .tip-label {
@@ -28,11 +44,13 @@ const { tip, color = 'var(--primary)' } = Astro.props;
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 4px;
+    animation: fadeIn 0.3s var(--ease-out) 0.35s both;
   }
 
   .tip-callout p {
     font-size: 13px;
     color: var(--text-secondary);
     line-height: 1.5;
+    animation: fadeIn 0.3s var(--ease-out) 0.4s both;
   }
 </style>

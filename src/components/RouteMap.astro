@@ -107,6 +107,7 @@ const stopsJson = JSON.stringify(stops.map(s => ({ lat: s.lat, lng: s.lng, numbe
     border: 1px solid var(--border);
     overflow: hidden;
     z-index: 0;
+    animation: scaleIn 0.5s var(--ease-out) 0.3s both;
   }
 
   :global(.custom-marker) {

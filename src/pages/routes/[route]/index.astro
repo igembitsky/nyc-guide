@@ -95,6 +95,7 @@ const tagColors: Record<string, string> = {
     gap: 4px;
     margin-bottom: 16px;
     transition: opacity var(--duration-fast);
+    animation: slideInLeft 0.4s var(--ease-out) both;
   }
 
   .route-back:hover { opacity: 0.7; }
@@ -105,6 +106,7 @@ const tagColors: Record<string, string> = {
     color: var(--route-accent, var(--primary));
     letter-spacing: 2px;
     margin-bottom: 6px;
+    animation: fadeInUp 0.4s var(--ease-out) 0.05s both;
   }
 
   .route-title {
@@ -114,6 +116,7 @@ const tagColors: Record<string, string> = {
     letter-spacing: -2px;
     line-height: 1.0;
     margin-bottom: 8px;
+    animation: fadeInUp 0.5s var(--ease-out) 0.1s both;
   }
 
   .route-tagline {
@@ -121,6 +124,7 @@ const tagColors: Record<string, string> = {
     color: var(--text-secondary);
     line-height: 1.4;
     margin-bottom: 16px;
+    animation: fadeInUp 0.5s var(--ease-out) 0.15s both;
   }
 
   .route-stats {
@@ -129,6 +133,7 @@ const tagColors: Record<string, string> = {
     padding: 12px 0;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.5s var(--ease-out) 0.2s both;
   }
 
   .stat { text-align: center; }
@@ -152,6 +157,17 @@ const tagColors: Record<string, string> = {
     padding: 12px 0 0;
     flex-wrap: wrap;
   }
+
+  .route-tags .tag {
+    opacity: 0;
+    animation: fadeInUp 0.3s var(--ease-out) forwards;
+  }
+  .route-tags .tag:nth-child(1) { animation-delay: 0.25s; }
+  .route-tags .tag:nth-child(2) { animation-delay: 0.3s; }
+  .route-tags .tag:nth-child(3) { animation-delay: 0.35s; }
+  .route-tags .tag:nth-child(4) { animation-delay: 0.4s; }
+  .route-tags .tag:nth-child(5) { animation-delay: 0.45s; }
+  .route-tags .tag:nth-child(6) { animation-delay: 0.5s; }
 
   .tag {
     padding: 4px 10px;

@@ -42,6 +42,14 @@ const detailUrl = `${base}routes/${routeId}/stops/${stop.number}-${stop.id}/`;
   .stop-item {
     display: flex;
     gap: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  }
+
+  .stop-item.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .stop-track {
@@ -64,6 +72,12 @@ const detailUrl = `${base}routes/${routeId}/stops/${stop.number}-${stop.id}/`;
     font-weight: 800;
     font-size: 12px;
     flex-shrink: 0;
+    transform: scale(0);
+    transition: transform 0.35s var(--ease-out) 0.1s;
+  }
+
+  .stop-item.visible .stop-num {
+    transform: scale(1);
   }
 
   .stop-line {
@@ -71,6 +85,13 @@ const detailUrl = `${base}routes/${routeId}/stops/${stop.number}-${stop.id}/`;
     flex: 1;
     min-height: 20px;
     background: var(--border);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s var(--ease-out) 0.2s;
+  }
+
+  .stop-item.visible .stop-line {
+    transform: scaleY(1);
   }
 
   .stop-body {
@@ -105,11 +126,17 @@ const detailUrl = `${base}routes/${routeId}/stops/${stop.number}-${stop.id}/`;
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    transition: opacity var(--duration-fast) var(--ease-out);
+    transition: opacity var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
   }
 
   .stop-btn:hover {
     opacity: 0.8;
+    transform: translateY(-1px);
+  }
+
+  .stop-btn:active {
+    transform: translateY(0) scale(0.97);
   }
 
   .stop-btn-maps {

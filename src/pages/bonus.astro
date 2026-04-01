@@ -68,6 +68,7 @@ const categories = [
     align-items: center;
     gap: 4px;
     margin-bottom: 16px;
+    animation: slideInLeft 0.4s var(--ease-out) both;
   }
 
   .bonus-label {
@@ -76,6 +77,7 @@ const categories = [
     color: var(--accent-gray);
     letter-spacing: 2px;
     margin-bottom: 6px;
+    animation: fadeInUp 0.4s var(--ease-out) 0.05s both;
   }
 
   .bonus-title {
@@ -85,12 +87,14 @@ const categories = [
     letter-spacing: -2px;
     line-height: 1.0;
     margin-bottom: 8px;
+    animation: fadeInUp 0.5s var(--ease-out) 0.1s both;
   }
 
   .bonus-subtitle {
     font-size: 14px;
     color: var(--text-secondary);
     line-height: 1.4;
+    animation: fadeInUp 0.5s var(--ease-out) 0.15s both;
   }
 
   .bonus-section {
@@ -113,6 +117,18 @@ const categories = [
     border-radius: var(--radius-lg);
     padding: 20px;
     margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  }
+
+  .bonus-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .bonus-section-title.visible {
+    animation: slideInLeft 0.4s var(--ease-out) both;
   }
 
   .bonus-card-name {
@@ -144,3 +160,16 @@ const categories = [
 
   .bonus-maps-btn:hover { opacity: 0.8; }
 </style>
+
+<script>
+  const bonusObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        bonusObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.bonus-card, .bonus-section-title').forEach(el => bonusObserver.observe(el));
+</script>

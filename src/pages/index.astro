@@ -14,7 +14,7 @@ const base = import.meta.env.BASE_URL;
       <p class="home-subtitle">5 curated walking routes through the real New York. No tourist traps. No bullshit. Just the good stuff, from someone who actually lives here.</p>
     </section>
 
-    <section class="home-routes">
+    <section class="home-routes stagger-children">
       <h2 class="section-label">Walking Routes</h2>
       {routes.map((route) => (
         <RouteCard
@@ -61,6 +61,7 @@ const base = import.meta.env.BASE_URL;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(255, 99, 25, 0.12), transparent 70%);
     pointer-events: none;
+    animation: pulseGlow 4s ease-in-out infinite;
   }
 
   .home-tag {
@@ -69,6 +70,7 @@ const base = import.meta.env.BASE_URL;
     color: var(--primary);
     letter-spacing: 2px;
     margin-bottom: 12px;
+    animation: fadeIn 0.4s var(--ease-out) both;
   }
 
   .home-title {
@@ -78,6 +80,7 @@ const base = import.meta.env.BASE_URL;
     letter-spacing: -2px;
     line-height: 1.0;
     margin-bottom: 12px;
+    animation: fadeInUp 0.5s var(--ease-out) 0.1s both;
   }
 
   .accent {
@@ -89,6 +92,7 @@ const base = import.meta.env.BASE_URL;
     color: var(--text-secondary);
     line-height: 1.5;
     max-width: 320px;
+    animation: fadeInUp 0.5s var(--ease-out) 0.2s both;
   }
 
   .home-routes {

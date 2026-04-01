@@ -36,5 +36,19 @@ const { stops, routeId, routeColor } = Astro.props;
     text-transform: uppercase;
     color: var(--text-muted);
     margin: 16px 0 16px;
+    animation: fadeIn 0.4s var(--ease-out) 0.3s both;
   }
 </style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.stop-item').forEach(el => observer.observe(el));
+</script>

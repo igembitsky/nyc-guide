@@ -41,6 +41,7 @@ const { prevHref, prevLabel, nextHref, nextLabel, routeColor } = Astro.props;
     display: flex;
     gap: 10px;
     z-index: 40;
+    animation: fadeInUp 0.4s var(--ease-out) 0.3s both;
   }
 
   .nav-btn {
@@ -51,7 +52,8 @@ const { prevHref, prevLabel, nextHref, nextLabel, routeColor } = Astro.props;
     font-weight: 700;
     font-size: 13px;
     text-align: center;
-    transition: opacity var(--duration-fast) var(--ease-out);
+    transition: opacity var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -59,6 +61,11 @@ const { prevHref, prevLabel, nextHref, nextLabel, routeColor } = Astro.props;
 
   .nav-btn:hover {
     opacity: 0.85;
+    transform: translateY(-1px);
+  }
+
+  .nav-btn:active {
+    transform: translateY(0) scale(0.98);
   }
 
   .nav-btn-prev {
@@ -70,5 +77,6 @@ const { prevHref, prevLabel, nextHref, nextLabel, routeColor } = Astro.props;
 
   .nav-btn-next {
     color: white;
+    animation: pulseGlow 3s ease-in-out 1s infinite;
   }
 </style>

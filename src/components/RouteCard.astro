@@ -32,12 +32,21 @@ const label = number > 0 ? String(number).padStart(2, '0') : '+';
     border-radius: var(--radius-lg);
     padding: 16px;
     margin-bottom: 10px;
-    transition: background var(--duration-fast) var(--ease-out);
+    transition: background var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-normal) var(--ease-out);
     cursor: pointer;
   }
 
   .route-card:hover {
     background: var(--surface-3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .route-card:active {
+    transform: translateY(0px) scale(0.98);
+    box-shadow: none;
   }
 
   .route-card.dimmed {
@@ -56,6 +65,11 @@ const label = number > 0 ? String(number).padStart(2, '0') : '+';
     font-size: 16px;
     color: white;
     flex-shrink: 0;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .route-card:hover .route-card-icon {
+    transform: scale(1.08);
   }
 
   .route-card-info {

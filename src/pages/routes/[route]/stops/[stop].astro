@@ -121,6 +121,7 @@ const commentaryParagraphs = stop.commentary.split('\n').filter(p => p.trim());
     color: var(--route-accent, var(--primary));
     letter-spacing: 2px;
     margin-bottom: 6px;
+    animation: slideInLeft 0.4s var(--ease-out) both;
   }
 
   .stop-name {
@@ -130,6 +131,7 @@ const commentaryParagraphs = stop.commentary.split('\n').filter(p => p.trim());
     letter-spacing: -1px;
     line-height: 1.1;
     margin-bottom: 12px;
+    animation: slideInLeft 0.5s var(--ease-out) 0.05s both;
   }
 
   .stop-tags {
@@ -138,6 +140,16 @@ const commentaryParagraphs = stop.commentary.split('\n').filter(p => p.trim());
     margin-bottom: 20px;
     flex-wrap: wrap;
   }
+
+  .stop-tags .tag {
+    opacity: 0;
+    animation: fadeInUp 0.3s var(--ease-out) forwards;
+  }
+  .stop-tags .tag:nth-child(1) { animation-delay: 0.1s; }
+  .stop-tags .tag:nth-child(2) { animation-delay: 0.15s; }
+  .stop-tags .tag:nth-child(3) { animation-delay: 0.2s; }
+  .stop-tags .tag:nth-child(4) { animation-delay: 0.25s; }
+  .stop-tags .tag:nth-child(5) { animation-delay: 0.3s; }
 
   .tag {
     padding: 4px 10px;
@@ -157,7 +169,14 @@ const commentaryParagraphs = stop.commentary.split('\n').filter(p => p.trim());
     color: var(--text-secondary);
     line-height: 1.65;
     margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeInUp 0.5s var(--ease-out) forwards;
   }
+  .stop-commentary p:nth-child(1) { animation-delay: 0.15s; }
+  .stop-commentary p:nth-child(2) { animation-delay: 0.22s; }
+  .stop-commentary p:nth-child(3) { animation-delay: 0.29s; }
+  .stop-commentary p:nth-child(4) { animation-delay: 0.36s; }
+  .stop-commentary p:nth-child(5) { animation-delay: 0.43s; }
 
   .stop-commentary :global(strong) {
     color: var(--text-primary);
@@ -171,6 +190,7 @@ const commentaryParagraphs = stop.commentary.split('\n').filter(p => p.trim());
     color: var(--text-muted);
     padding: 8px 0 80px;
     flex-wrap: wrap;
+    animation: fadeIn 0.4s var(--ease-out) 0.4s both;
   }
 
   .next-preview strong {
