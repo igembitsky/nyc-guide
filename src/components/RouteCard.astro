@@ -1,0 +1,82 @@
+---
+interface Props {
+  number: number;
+  title: string;
+  color: string;
+  detail: string;
+  href: string;
+  dimmed?: boolean;
+}
+
+const { number, title, color, detail, href, dimmed = false } = Astro.props;
+const label = number > 0 ? String(number).padStart(2, '0') : '+';
+---
+
+<a href={href} class:list={["route-card", { dimmed }]}>
+  <div class="route-card-icon" style={`background: ${color}`}>
+    {label}
+  </div>
+  <div class="route-card-info">
+    <div class="route-card-name">{title}</div>
+    <div class="route-card-detail">{detail}</div>
+  </div>
+  <div class="route-card-arrow">&rsaquo;</div>
+</a>
+
+<style>
+  .route-card {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 10px;
+    transition: background var(--duration-fast) var(--ease-out);
+    cursor: pointer;
+  }
+
+  .route-card:hover {
+    background: var(--surface-3);
+  }
+
+  .route-card.dimmed {
+    opacity: 0.7;
+  }
+
+  .route-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 16px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .route-card-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .route-card-name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+
+  .route-card-detail {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .route-card-arrow {
+    color: var(--text-muted);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+</style>

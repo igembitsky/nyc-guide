@@ -1,11 +1,108 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import RouteCard from '../components/RouteCard.astro';
+import { routes } from '../data/routes';
+
+const base = import.meta.env.BASE_URL;
 ---
+
 <BaseLayout title="Walk the City">
-  <main style="padding: 48px 24px; text-align: center;">
-    <h1 style="font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 800; letter-spacing: -2px;">
-      Walk the City<span style="color: var(--primary);">.</span>
-    </h1>
-    <p style="color: var(--text-secondary); margin-top: 16px;">Coming soon</p>
+  <main class="home">
+    <section class="home-hero">
+      <div class="home-tag">IGOR'S NYC GUIDE</div>
+      <h1 class="home-title">Walk the<br>City<span class="accent">.</span></h1>
+      <p class="home-subtitle">5 curated walking routes through the real New York. No tourist traps. No bullshit. Just the good stuff, from someone who actually lives here.</p>
+    </section>
+
+    <section class="home-routes">
+      <h2 class="section-label">Walking Routes</h2>
+      {routes.map((route) => (
+        <RouteCard
+          number={route.number}
+          title={route.title}
+          color={route.color}
+          detail={`${route.stops.length} stops \u00B7 ${route.duration} \u00B7 ${route.stops[0].name} \u2192 ${route.stops[route.stops.length - 1].name}`}
+          href={`${base}routes/${route.id}/`}
+        />
+      ))}
+
+      <h2 class="section-label" style="margin-top: 24px;">Bonus</h2>
+      <RouteCard
+        number={0}
+        title="Museums & Day Trips"
+        color="#808183"
+        detail="Met Cloisters \u00B7 Roosevelt Island \u00B7 Coney Island"
+        href={`${base}bonus/`}
+        dimmed
+      />
+    </section>
   </main>
 </BaseLayout>
+
+<style>
+  .home {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .home-hero {
+    padding: 60px 20px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .home-hero::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 99, 25, 0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  .home-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--primary);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  }
+
+  .home-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 10vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1.0;
+    margin-bottom: 12px;
+  }
+
+  .accent {
+    color: var(--primary);
+  }
+
+  .home-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 320px;
+  }
+
+  .home-routes {
+    padding: 0 16px 100px;
+  }
+
+  .section-label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    padding-top: 8px;
+  }
+</style>
