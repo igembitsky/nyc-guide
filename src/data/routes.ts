@@ -193,7 +193,7 @@ After you've walked the promenade and taken approximately 400 photos, here's wha
     title: "World Trade Center",
     tagline:
       "From the Oculus to the Esplanade. A walk through remembrance and rebirth.",
-    color: "#5B8DEF",
+    color: "#0039A6",
     colorName: "blue",
     duration: "~2.5 hrs",
     distance: "2.1 mi",
@@ -293,7 +293,7 @@ The detail and humor in each piece is incredible. Otterness has a real knack for
     title: "Financial District",
     tagline:
       "Wall Street, old New York, and the best free ferry ride in the city.",
-    color: "#2ECC71",
+    color: "#00933C",
     colorName: "green",
     duration: "~2 hrs",
     distance: "1.8 mi",

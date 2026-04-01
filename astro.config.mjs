@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 export default defineConfig({
   site: 'https://yourusername.github.io',
-  base: '/nyc-guide/',
+  base: '/nyc-guide',
   output: 'static',
   build: {
     assets: '_assets',
