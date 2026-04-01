@@ -1,0 +1,140 @@
+---
+import type { Stop } from '../data/routes';
+
+interface Props {
+  stop: Stop;
+  routeId: string;
+  routeColor: string;
+  isLast: boolean;
+}
+
+const { stop, routeId, routeColor, isLast } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const mapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${stop.lat},${stop.lng}&travelmode=walking`;
+const detailUrl = `${base}routes/${routeId}/stops/${stop.number}-${stop.id}/`;
+---
+
+<div class="stop-item">
+  <div class="stop-track">
+    <div class="stop-num" style={`background: ${routeColor}`}>{stop.number}</div>
+    {!isLast && <div class="stop-line"></div>}
+  </div>
+  <div class="stop-body">
+    <h3 class="stop-name">{stop.name}</h3>
+    <p class="stop-desc">{stop.shortDesc}</p>
+    <div class="stop-actions">
+      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="stop-btn stop-btn-maps">
+        Open in Maps
+      </a>
+      <a href={detailUrl} class="stop-btn stop-btn-detail">
+        Details &rsaquo;
+      </a>
+    </div>
+    {stop.walkTimeToNext && (
+      <div class="stop-walk-time">
+        <span class="walk-arrow">&darr;</span> ~{stop.walkTimeToNext} min walk
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .stop-item {
+    display: flex;
+    gap: 12px;
+  }
+
+  .stop-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 28px;
+    flex-shrink: 0;
+  }
+
+  .stop-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .stop-line {
+    width: 2px;
+    flex: 1;
+    min-height: 20px;
+    background: var(--border);
+  }
+
+  .stop-body {
+    flex: 1;
+    padding-bottom: 20px;
+  }
+
+  .stop-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 3px;
+  }
+
+  .stop-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+
+  .stop-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .stop-btn {
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: opacity var(--duration-fast) var(--ease-out);
+  }
+
+  .stop-btn:hover {
+    opacity: 0.8;
+  }
+
+  .stop-btn-maps {
+    background: var(--primary-dim);
+    color: var(--primary);
+  }
+
+  .stop-btn-detail {
+    background: var(--surface-3);
+    color: var(--text-secondary);
+  }
+
+  .stop-walk-time {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 0 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .walk-arrow {
+    color: var(--border-light);
+  }
+</style>

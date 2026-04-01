@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RouteMap from '../../../components/RouteMap.astro';
+import StopTimeline from '../../../components/StopTimeline.astro';
+import { routes } from '../../../data/routes';
+
+export function getStaticPaths() {
+  return routes.map((route) => ({
+    params: { route: route.id },
+  }));
+}
+
+const { route: routeId } = Astro.params;
+const route = routes.find(r => r.id === routeId)!;
+const base = import.meta.env.BASE_URL;
+
+const tagColors: Record<string, string> = {
+  food: 'var(--accent-orange)',
+  views: 'var(--accent-green)',
+  iconic: 'var(--accent-blue)',
+  history: 'var(--accent-blue)',
+  architecture: 'var(--accent-blue)',
+  culture: 'var(--accent-purple)',
+  shopping: 'var(--accent-yellow)',
+  nightlife: 'var(--accent-red)',
+  walking: 'var(--accent-gray)',
+  free: 'var(--accent-green)',
+  morning: 'var(--accent-gray)',
+  landmarks: 'var(--accent-blue)',
+  drinks: 'var(--accent-purple)',
+};
+---
+
+<BaseLayout title={route.title} description={route.tagline}>
+  <main class="route-page" data-accent={route.colorName}>
+    <div class="route-header">
+      <a href={`${base}`} class="route-back">&lsaquo; All Routes</a>
+      <div class="route-number">WALK {String(route.number).padStart(2, '0')} / {String(routes.length).padStart(2, '0')}</div>
+      <h1 class="route-title">{route.title}</h1>
+      <p class="route-tagline">{route.tagline}</p>
+
+      <div class="route-stats">
+        <div class="stat">
+          <div class="stat-value">{route.stops.length}</div>
+          <div class="stat-label">Stops</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">{route.duration.replace('~', '')}</div>
+          <div class="stat-label">Duration</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">{route.distance.replace(' mi', '')}</div>
+          <div class="stat-label">Miles</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">{route.budget}</div>
+          <div class="stat-label">Budget</div>
+        </div>
+      </div>
+
+      <div class="route-tags">
+        {route.tags.map((tag) => {
+          const color = tagColors[tag] || 'var(--accent-gray)';
+          return (
+            <span class="tag" style={`background: color-mix(in srgb, ${color} 15%, transparent); color: ${color};`}>
+              {tag}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+
+    <RouteMap stops={route.stops} routeColor={route.color} />
+
+    <StopTimeline stops={route.stops} routeId={route.id} routeColor={route.color} />
+  </main>
+</BaseLayout>
+
+<style>
+  .route-page {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .route-header {
+    padding: 48px 20px 20px;
+  }
+
+  .route-back {
+    font-size: 13px;
+    color: var(--route-accent, var(--primary));
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 16px;
+    transition: opacity var(--duration-fast);
+  }
+
+  .route-back:hover { opacity: 0.7; }
+
+  .route-number {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--route-accent, var(--primary));
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .route-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1.0;
+    margin-bottom: 8px;
+  }
+
+  .route-tagline {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .route-stats {
+    display: flex;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stat { text-align: center; }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 20px;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .route-tags {
+    display: flex;
+    gap: 6px;
+    padding: 12px 0 0;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+</style>

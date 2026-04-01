@@ -1,0 +1,135 @@
+---
+import type { Stop } from '../data/routes';
+
+interface Props {
+  stops: Stop[];
+  routeColor: string;
+}
+
+const { stops, routeColor } = Astro.props;
+const stopsJson = JSON.stringify(stops.map(s => ({ lat: s.lat, lng: s.lng, number: s.number, name: s.name })));
+---
+
+<div class="map-container" id="route-map"
+  data-stops={stopsJson}
+  data-color={routeColor}>
+</div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<script>
+  import L from 'leaflet';
+
+  function initMap() {
+    const container = document.getElementById('route-map');
+    if (!container) return;
+
+    const stops = JSON.parse(container.dataset.stops || '[]');
+    const color = container.dataset.color || '#FF6319';
+
+    if (stops.length === 0) return;
+
+    const map = L.map(container, {
+      zoomControl: true,
+      attributionControl: false,
+      scrollWheelZoom: false,
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Add markers
+    const markers: L.LatLng[] = [];
+    stops.forEach((stop: { lat: number; lng: number; number: number; name: string }) => {
+      const latlng = L.latLng(stop.lat, stop.lng);
+      markers.push(latlng);
+
+      const icon = L.divIcon({
+        className: 'custom-marker',
+        html: `<div style="
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: ${color};
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Space Grotesk', sans-serif;
+          font-weight: 800;
+          font-size: 11px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+          border: 2px solid rgba(255,255,255,0.2);
+        ">${stop.number}</div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+      });
+
+      L.marker(latlng, { icon })
+        .bindPopup(`<strong>${stop.number}. ${stop.name}</strong>`)
+        .addTo(map);
+    });
+
+    // Draw route line
+    if (markers.length > 1) {
+      L.polyline(markers, {
+        color: color,
+        weight: 3,
+        opacity: 0.6,
+        dashArray: '8, 8',
+      }).addTo(map);
+    }
+
+    // Fit bounds
+    const bounds = L.latLngBounds(markers);
+    map.fitBounds(bounds, { padding: [30, 30] });
+
+    // Enable scroll zoom after first interaction
+    map.on('click', () => {
+      map.scrollWheelZoom.enable();
+    });
+  }
+
+  // Init when visible
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMap);
+  } else {
+    initMap();
+  }
+</script>
+
+<style>
+  .map-container {
+    margin: 16px;
+    height: 250px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  :global(.custom-marker) {
+    background: none !important;
+    border: none !important;
+  }
+
+  :global(.leaflet-popup-content-wrapper) {
+    background: var(--surface-2);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 13px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  }
+
+  :global(.leaflet-popup-tip) {
+    background: var(--surface-2);
+  }
+
+  @media (min-width: 768px) {
+    .map-container {
+      height: 350px;
+    }
+  }
+</style>

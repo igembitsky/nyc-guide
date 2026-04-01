@@ -1,0 +1,40 @@
+---
+import type { Stop } from '../data/routes';
+import StopTimelineItem from './StopTimelineItem.astro';
+
+interface Props {
+  stops: Stop[];
+  routeId: string;
+  routeColor: string;
+}
+
+const { stops, routeId, routeColor } = Astro.props;
+---
+
+<div class="timeline">
+  <h2 class="timeline-title">Stops Along the Way</h2>
+  {stops.map((stop, i) => (
+    <StopTimelineItem
+      stop={stop}
+      routeId={routeId}
+      routeColor={routeColor}
+      isLast={i === stops.length - 1}
+    />
+  ))}
+</div>
+
+<style>
+  .timeline {
+    padding: 0 16px 100px;
+  }
+
+  .timeline-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 16px 0 16px;
+  }
+</style>
