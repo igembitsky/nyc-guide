@@ -8,6 +8,9 @@ interface Props {
 
 const { title, description = "5 curated walking routes through the real New York, from a local who actually lives here." } = Astro.props;
 const base = import.meta.env.BASE_URL;
+const fullTitle = `${title} | Igor's NYC Guide`;
+const ogImage = "https://igembitsky.github.io/nyc-guide/og-image.png";
+const siteUrl = "https://igembitsky.github.io/nyc-guide/";
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -17,8 +20,21 @@ const base = import.meta.env.BASE_URL;
   <meta name="description" content={description}>
   <meta name="theme-color" content="#0A0A0A">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- Open Graph / Telegram / Social -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={siteUrl}>
+  <meta property="og:title" content={fullTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:image:width" content="2400">
+  <meta property="og:image:height" content="1260">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={fullTitle}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImage}>
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`}>
-  <title>{title} | Igor's NYC Guide</title>
+  <title>{fullTitle}</title>
 </head>
 <body>
   <slot />
