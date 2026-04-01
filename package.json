@@ -16,6 +16,8 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.17"
+    "@playwright/test": "^1.59.1",
+    "@types/leaflet": "^1.9.17",
+    "playwright": "^1.59.1"
   }
 }
