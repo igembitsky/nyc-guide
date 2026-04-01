@@ -17,8 +17,8 @@
 
   /* MTA Subway Accents */
   --accent-orange: #FF6319;
-  --accent-blue: #0039A6;
-  --accent-green: #00933C;
+  --accent-blue: #5B8DEF;
+  --accent-green: #2ECC71;
   --accent-red: #EE352E;
   --accent-yellow: #FCCC0A;
   --accent-purple: #B933AD;
@@ -108,8 +108,8 @@ img {
 
 /* Utility: route accent color override */
 [data-accent="orange"]  { --route-accent: var(--accent-orange); --route-dim: rgba(255, 99, 25, 0.15); }
-[data-accent="blue"]    { --route-accent: var(--accent-blue);   --route-dim: rgba(0, 57, 166, 0.15); }
-[data-accent="green"]   { --route-accent: var(--accent-green);  --route-dim: rgba(0, 147, 60, 0.15); }
+[data-accent="blue"]    { --route-accent: var(--accent-blue);   --route-dim: rgba(91, 141, 239, 0.15); }
+[data-accent="green"]   { --route-accent: var(--accent-green);  --route-dim: rgba(46, 204, 113, 0.15); }
 [data-accent="red"]     { --route-accent: var(--accent-red);    --route-dim: rgba(238, 53, 46, 0.15); }
 [data-accent="purple"]  { --route-accent: var(--accent-purple); --route-dim: rgba(185, 51, 173, 0.15); }
 [data-accent="gray"]    { --route-accent: var(--accent-gray);   --route-dim: rgba(128, 129, 131, 0.15); }
