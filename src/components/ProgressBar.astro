@@ -1,0 +1,94 @@
+---
+interface Props {
+  totalStops: number;
+  currentStop: number;
+  routeColor: string;
+  routeName: string;
+}
+
+const { totalStops, currentStop, routeColor, routeName } = Astro.props;
+const stops = Array.from({ length: totalStops }, (_, i) => i + 1);
+---
+
+<div class="progress-bar-container">
+  <div class="progress-dots">
+    {stops.map((num, i) => (
+      <>
+        <div
+          class:list={["progress-dot", {
+            done: num < currentStop,
+            active: num === currentStop,
+          }]}
+          style={num <= currentStop ? `background: ${routeColor}` : ''}
+        />
+        {i < stops.length - 1 && (
+          <div
+            class:list={["progress-seg", { done: num < currentStop }]}
+            style={num < currentStop ? `background: ${routeColor}` : ''}
+          />
+        )}
+      </>
+    ))}
+  </div>
+  <div class="progress-labels">
+    <span>STOP {currentStop} OF {totalStops}</span>
+    <span class="progress-route" style={`color: ${routeColor}`}>{routeName.toUpperCase()}</span>
+  </div>
+</div>
+
+<style>
+  .progress-bar-container {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10, 10, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 48px 16px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .progress-dots {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+
+  .progress-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-light);
+    flex-shrink: 0;
+    transition: all var(--duration-fast) var(--ease-out);
+  }
+
+  .progress-dot.done {
+    opacity: 0.4;
+  }
+
+  .progress-dot.active {
+    width: 10px;
+    height: 10px;
+  }
+
+  .progress-seg {
+    flex: 1;
+    height: 2px;
+    background: var(--border);
+  }
+
+  .progress-seg.done {
+    opacity: 0.4;
+  }
+
+  .progress-labels {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

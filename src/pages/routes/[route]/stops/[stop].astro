@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ProgressBar from '../../../../components/ProgressBar.astro';
+import MapsButtons from '../../../../components/MapsButtons.astro';
+import TipCallout from '../../../../components/TipCallout.astro';
+import StopNav from '../../../../components/StopNav.astro';
+import { routes } from '../../../../data/routes';
+
+export function getStaticPaths() {
+  return routes.flatMap((route) =>
+    route.stops.map((stop) => ({
+      params: {
+        route: route.id,
+        stop: `${stop.number}-${stop.id}`,
+      },
+    }))
+  );
+}
+
+const { route: routeId, stop: stopParam } = Astro.params;
+const route = routes.find(r => r.id === routeId)!;
+const stopIndex = route.stops.findIndex(s => `${s.number}-${s.id}` === stopParam);
+const stop = route.stops[stopIndex];
+
+const base = import.meta.env.BASE_URL;
+const prevStop = stopIndex > 0 ? route.stops[stopIndex - 1] : null;
+const nextStop = stopIndex < route.stops.length - 1 ? route.stops[stopIndex + 1] : null;
+
+const prevHref = prevStop ? `${base}routes/${route.id}/stops/${prevStop.number}-${prevStop.id}/` : undefined;
+const nextHref = nextStop ? `${base}routes/${route.id}/stops/${nextStop.number}-${nextStop.id}/` : undefined;
+
+const tagColors: Record<string, string> = {
+  food: 'var(--accent-orange)',
+  'food-spot': 'var(--accent-orange)',
+  views: 'var(--accent-green)',
+  'photo-op': 'var(--accent-green)',
+  iconic: 'var(--accent-blue)',
+  history: 'var(--accent-blue)',
+  landmark: 'var(--accent-blue)',
+  architecture: 'var(--accent-blue)',
+  museum: 'var(--accent-blue)',
+  culture: 'var(--accent-purple)',
+  nightlife: 'var(--accent-red)',
+  shopping: 'var(--accent-yellow)',
+  walking: 'var(--accent-gray)',
+  explore: 'var(--accent-gray)',
+  free: 'var(--accent-green)',
+  art: 'var(--accent-purple)',
+  drinks: 'var(--accent-purple)',
+};
+
+const commentaryParagraphs = stop.commentary.split('\n').filter(p => p.trim());
+---
+
+<BaseLayout title={`${stop.name} — ${route.title}`} description={stop.shortDesc}>
+  <main class="stop-page" data-accent={route.colorName}>
+    <ProgressBar
+      totalStops={route.stops.length}
+      currentStop={stop.number}
+      routeColor={route.color}
+      routeName={route.title}
+    />
+
+    <div class="stop-content">
+      <div class="stop-number">STOP {String(stop.number).padStart(2, '0')}</div>
+      <h1 class="stop-name">{stop.name}</h1>
+
+      <div class="stop-tags">
+        {stop.tags.map((tag) => {
+          const color = tagColors[tag] || 'var(--accent-gray)';
+          return (
+            <span class="tag" style={`background: color-mix(in srgb, ${color} 15%, transparent); color: ${color};`}>
+              {tag}
+            </span>
+          );
+        })}
+      </div>
+
+      <div class="stop-commentary">
+        {commentaryParagraphs.map((p) => (
+          <p set:html={p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')} />
+        ))}
+      </div>
+
+      <TipCallout tip={stop.tip} color={route.color} />
+
+      <MapsButtons lat={stop.lat} lng={stop.lng} name={stop.name} />
+
+      {nextStop && (
+        <div class="next-preview">
+          <span>Next stop:</span>
+          <strong>{nextStop.name}</strong>
+          {stop.walkTimeToNext && <span>· ~{stop.walkTimeToNext} min walk</span>}
+        </div>
+      )}
+    </div>
+
+    <StopNav
+      prevHref={prevHref}
+      prevLabel={prevStop?.name}
+      nextHref={nextHref}
+      nextLabel={nextStop?.name}
+      routeColor={route.color}
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  .stop-page {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .stop-content {
+    padding: 20px 20px 24px;
+  }
+
+  .stop-number {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--route-accent, var(--primary));
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+
+  .stop-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 7vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .stop-tags {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .stop-commentary {
+    margin-bottom: 24px;
+  }
+
+  .stop-commentary p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .stop-commentary :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .next-preview {
+    display: flex;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 8px 0 80px;
+    flex-wrap: wrap;
+  }
+
+  .next-preview strong {
+    color: var(--text-secondary);
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  tip: string;
+  color?: string;
+}
+
+const { tip, color = 'var(--primary)' } = Astro.props;
+---
+
+<div class="tip-callout" style={`border-left-color: ${color}`}>
+  <div class="tip-label" style={`color: ${color}`}>Igor's Tip</div>
+  <p>{tip}</p>
+</div>
+
+<style>
+  .tip-callout {
+    background: var(--surface-2);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    border-left: 3px solid;
+  }
+
+  .tip-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .tip-callout p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+</style>
